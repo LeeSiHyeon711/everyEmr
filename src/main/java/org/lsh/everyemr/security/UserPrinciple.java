@@ -25,7 +25,7 @@ public class UserPrinciple implements UserDetails {
     transient private User user;
     private Set<GrantedAuthority> authorities;
 
-    // UserPrinciple 클래스에 아래와 같은 생성자를 추가합니다.
+    // UserPrinciple 클래스에 아래와 같은 생성자를 추가
     public UserPrinciple(Long id, String username, List<GrantedAuthority> authorities) {
         this.id = id;
         this.username = username;

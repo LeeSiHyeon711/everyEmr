@@ -51,11 +51,8 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         if (signInUser == null || !passwordEncoder.matches(request.getPassword(), signInUser.getPassword())) {
             throw new RuntimeException("Invalid credentials");
         }
-        log.info("응급실 알리미 로그인 처리 닉네임 : " + request.getUsername());
-        log.info("로그인 한 유저의 모든 정보 : " + request);
-        signInUser.setToken(jwt);
 
-        log.info("signInUser : " + signInUser);
+        signInUser.setToken(jwt);
 
         return generateToken(signInUser); // signInUser는 User 객체
     }
@@ -64,8 +61,6 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     public String generateToken(User user) {
         // HMAC용 Secret Key 생성
         Key key = Keys.hmacShaKeyFor(JWT_SECRET.getBytes(StandardCharsets.UTF_8));
-
-        log.info("generateToken 메서드에서 생성됀 토큰 : "+ key);
 
         return Jwts.builder()
                 .setSubject(String.valueOf(user.getId())) // 사용자 ID를 subject로 설정

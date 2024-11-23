@@ -44,7 +44,7 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
                 .csrf(AbstractHttpConfigurer::disable) // CSRF 비활성화 (JWT 사용)
-                .cors(httpSecurityCorsConfigurer -> corsConfigurationSource()) // CORS 설정
+                .cors(cors -> cors.configurationSource(corsConfigurationSource())) // CORS 설정
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // 세션 비활성화 (STATELESS)
 
@@ -61,13 +61,15 @@ public class SecurityConfig {
 
     // CORS 설정
     @Bean
-    CorsConfigurationSource corsConfigurationSource() {
+    public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(Arrays.asList("*")); // 모든 Origin 허용 (보안 강화 시 특정 도메인으로 제한 가능)
-        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE")); // 허용 메서드
-        configuration.setAllowedHeaders(Arrays.asList("*")); // 모든 헤더 허용
+        configuration.addAllowedOrigin("http://localhost:3000"); // 리액트 개발 서버 주소
+        configuration.addAllowedMethod("*");
+        configuration.addAllowedHeader("*");
+        configuration.setAllowCredentials(true); // 쿠키 허용 (JWT 사용 시 필요)
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", configuration); // 모든 경로에 CORS 설정 적용
+        source.registerCorsConfiguration("/**", configuration);
         return source;
     }
+
 }

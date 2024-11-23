@@ -6,10 +6,7 @@ import org.lsh.everyemr.security.UserPrinciple;
 import org.lsh.everyemr.service.UserService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/user")
@@ -17,6 +14,15 @@ import org.springframework.web.bind.annotation.RestController;
 public class UserController {
 
     private final UserService userService;
+
+    @GetMapping("/join")
+    public void join(){
+
+    }
+    @GetMapping("/login")
+    public void login(){
+
+    }
 
     @PutMapping("/change/{role}")
     public ResponseEntity<Object> changeRole(@AuthenticationPrincipal UserPrinciple userPrinciple,

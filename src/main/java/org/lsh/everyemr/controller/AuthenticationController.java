@@ -32,13 +32,10 @@ public class AuthenticationController {
         if (userService.findByUsername(user.getUsername()) != null) {
             return new ResponseEntity<>(HttpStatus.CONFLICT);
         }
-
         // 사용자 저장
         User savedUser = userService.saveUser(user);
-
         // JWT 생성
         String token = authenticationService.generateToken(savedUser);
-
         // AuthResponse 반환
         return new ResponseEntity<>(new AuthResponse(savedUser, token), HttpStatus.CREATED);
     }
@@ -49,13 +46,8 @@ public class AuthenticationController {
         try {
             // 로그인 성공 시 JWT 생성
             String token = authenticationService.signInAndReturnJWT(request);
-
             // 사용자 정보 가져오기
             User user = userService.findByUsername(request.getUsername());
-
-
-            log.info("Generated Token: {}", token);
-
             // 응답으로 토큰과 최소한의 사용자 정보 반환
             return ResponseEntity.ok(Map.of(
                     "token", token,

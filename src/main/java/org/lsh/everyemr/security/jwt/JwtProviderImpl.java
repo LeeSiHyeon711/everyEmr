@@ -52,9 +52,6 @@ public class JwtProviderImpl implements JwtProvider {
 
         // HMAC 키 생성
         Key key = Keys.hmacShaKeyFor(JWT_SECRET.getBytes(StandardCharsets.UTF_8));
-        log.info("JWT Secret Key: {}", JWT_SECRET);
-        log.info("JWT Key Length: {}", JWT_SECRET.getBytes(StandardCharsets.UTF_8).length);
-        log.info("Signing Algorithm: {}", SignatureAlgorithm.HS256);
 
         // JWT 생성
         String token = Jwts.builder()
@@ -66,7 +63,6 @@ public class JwtProviderImpl implements JwtProvider {
                 .signWith(key, SignatureAlgorithm.HS256) // 서명 알고리즘 설정
                 .compact();
 
-        log.info("Generated JWT: {}", token); // 토큰 디버깅 로그
         return Jwts.builder()
                 .setSubject(String.valueOf(auth.getId())) // sub에 userId 저장
                 .claim("userId", auth.getId()) // userId 클레임 추가
@@ -120,9 +116,6 @@ public class JwtProviderImpl implements JwtProvider {
             log.error("Token is null or not found in the request");
             return null;
         }
-
-        log.info("Extracted Token: {}", token);
-
         Key key = Keys.hmacShaKeyFor(JWT_SECRET.getBytes(StandardCharsets.UTF_8));
         try {
             Claims claims = Jwts.parserBuilder()
@@ -130,7 +123,6 @@ public class JwtProviderImpl implements JwtProvider {
                     .build()
                     .parseClaimsJws(token)
                     .getBody();
-            log.info("Extracted Claims: {}", claims);
             return claims;
         } catch (Exception e) {
             log.error("Failed to extract claims from token. Error: {}", e.getMessage());
