@@ -40,4 +40,15 @@ public class UserServiceImpl implements UserService {
     public List<User> findAllUsers() {
         return userRepository.findAll();
     }
+
+    public boolean changeUserRole(String username, String newRole) {
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new RuntimeException("User not found")); // User 타입으로 안전하게 반환
+
+        // 권한 변경 로직
+        user.setRole(Role.valueOf(newRole)); // Role이 Enum 타입일 경우
+        userRepository.save(user);
+        return true;
+    }
+
 }

@@ -21,7 +21,7 @@ public class SecurityUtils {
         String bearerToken = request.getHeader(AUTH_HEADER);
 
         if (StringUtils.hasLength(bearerToken) && bearerToken.startsWith(AUTH_TOKEN_PREFIX)) {
-            return bearerToken.substring(AUTH_TOKEN_PREFIX.length());
+            return bearerToken.substring(9);
         }
         return null; // 없을 경우
     }

@@ -22,8 +22,8 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;  // 고유 ID
 
-    @Column(name = "k_id", nullable = false, unique = true)
-    private Long kakaoId;  // 카카오 사용자 고유 ID
+//    @Column(name = "k_id", nullable = false, unique = true)
+//    private Long kakaoId;  // 카카오 사용자 고유 ID
 
     @Column(name = "password", nullable = false)
     private String password;
