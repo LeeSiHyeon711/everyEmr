@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.lsh.everyemr.entity.User;
 import org.lsh.everyemr.model.Role;
 import org.lsh.everyemr.repository.UserRepository;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -31,10 +32,10 @@ public class UserServiceImpl implements UserService {
         return userRepository.findUserByUsername(username);
     }
 
-    @Override
-    public void changeRole(Role newRole, String username) {
-        userRepository.updateUserRole(username, newRole);
-    }
+//    @Override
+//    public void changeRole(Role newRole, String username) {
+//        userRepository.updateUserRole(username, newRole);
+//    }
 
     @Override
     public List<User> findAllUsers() {
@@ -47,6 +48,21 @@ public class UserServiceImpl implements UserService {
 
         // 권한 변경 로직
         user.setRole(Role.valueOf(newRole)); // Role이 Enum 타입일 경우
+        userRepository.save(user);
+        return true;
+    }
+
+    @Override
+    public boolean requestRoleChange() {
+        String currentUsername = SecurityContextHolder.getContext().getAuthentication().getName();
+        User user = userRepository.findByUsername(currentUsername)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        if (user.getIsLoading() == true) {
+            return false; // 이미 신청한 상태
+        }
+
+        user.setIsLoading(true); // 변경 신청 상태로 설정
         userRepository.save(user);
         return true;
     }
