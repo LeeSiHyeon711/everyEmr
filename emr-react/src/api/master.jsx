@@ -5,7 +5,7 @@ export const changeUserRole = async (username, newRole) => {
     try {
         const token = localStorage.getItem("token"); // 저장된 JWT 토큰 가져오기
         const headers = {
-            Authorization: `Bearer + ${token}`, // Authorization 헤더 추가
+            Authorization: `Bearer ${token}`, // Authorization 헤더 추가
         };
 
         const response = await axios.put(
