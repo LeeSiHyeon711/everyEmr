@@ -48,6 +48,7 @@ public class UserServiceImpl implements UserService {
 
         // 권한 변경 로직
         user.setRole(Role.valueOf(newRole)); // Role이 Enum 타입일 경우
+        user.setIsLoading(Boolean.FALSE); // is_loading 을 false로 설정
         userRepository.save(user);
         return true;
     }
